@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-16T17:23:55.479Z",
+  "n8nVersion": "2.39.6",
+  "nodeVersion": "v24.13.1",
+  "platform": "win32",
+  "scope": "Local self-hosted CLI with actual HTTP nodes, synthetic Header Auth credentials and a loopback fixture server. No Conta integration, Cloud or schedule acceptance.",
+  "workflowHashes": {
+    "conta-intercompany.json": "5f8a78e65ff934db830dfdb6b9487ef5b9afcac9e6a336728eb29d76c139a75f",
+    "conta-synthetic-demo.json": "fd4d86d77a58a86b1173bf41884c4aa883805c31edc96bf5991e341486ebd8c3"
+  },
+  "results": [
+    {
+      "scenario": "demo",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "invalid-config",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "success",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "retry",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "forbidden",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "changed",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "http-0",
+      "passed": true,
+      "status": "success"
+    },
+    {
+      "scenario": "http-1",
+      "passed": true,
+      "status": "success"
+    }
+  ]
+}

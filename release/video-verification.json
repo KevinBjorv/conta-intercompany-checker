@@ -1,0 +1,15 @@
+{
+  "type": "Silent synthetic explainer with Norwegian on-screen text; not a live Conta recording",
+  "programs": [],
+  "stream_groups": [],
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "format": {
+    "duration": "90.000000"
+  }
+}

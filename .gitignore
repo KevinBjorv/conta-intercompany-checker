@@ -1,0 +1,9 @@
+node_modules/
+.qa/
+.cache/
+dist/
+private/
+.env*
+docs/conta-openapi.json
+release/*.zip
+release/*.tar.gz

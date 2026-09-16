@@ -1,0 +1,441 @@
+{
+  "config": {
+    "environment": "sandbox",
+    "period": "2026-08",
+    "tolerance": "0.01",
+    "companies": {
+      "A": {
+        "organizationId": "900001",
+        "name": "Eksempel Fjord AS (syntetisk)",
+        "authorized": true,
+        "currency": "NOK",
+        "accounts": [
+          {
+            "number": "1560",
+            "dedicatedToOtherCompany": true,
+            "positionsInNok": true
+          }
+        ]
+      },
+      "B": {
+        "organizationId": "900002",
+        "name": "Eksempel Ås AS (syntetisk)",
+        "authorized": true,
+        "currency": "NOK",
+        "accounts": [
+          {
+            "number": "2960",
+            "dedicatedToOtherCompany": true,
+            "positionsInNok": true
+          }
+        ]
+      }
+    },
+    "sharedInvoiceNumbersConfirmed": true,
+    "candidateDateWindowDays": 3,
+    "liveValidation": {
+      "reference": "",
+      "signsDatesOpeningAndOmissionsVerified": false
+    }
+  },
+  "receipts": [
+    {
+      "request": {
+        "side": "A",
+        "kind": "accounts",
+        "key": "A:accounts",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900001/bookkeeping-accounts?hits=0&page=0"
+      },
+      "body": [
+        {
+          "id": "10",
+          "bookkeepingAccountNo": "1560",
+          "name": "Mellomværende – dedikert konto",
+          "isActive": true
+        }
+      ],
+      "retrievedAt": "2026-09-16T11:59:40.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "A",
+        "kind": "before",
+        "key": "A:before",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900001/reports/trial-balance?startDate=2026-08-01&endDate=2026-08-31"
+      },
+      "body": {
+        "trialBalanceOutputSub": [
+          {
+            "bookkeepingAccountNo": "1560",
+            "bookkeepingAccountName": "Mellomværende",
+            "sumIngoing": "100000.00",
+            "sumChanged": "150000.00",
+            "sumOutgoing": "250000.00"
+          }
+        ],
+        "sumIngoing": "0.00",
+        "sumChanged": "0.00",
+        "sumOutgoing": "0.00"
+      },
+      "retrievedAt": "2026-09-16T11:59:41.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "B",
+        "kind": "accounts",
+        "key": "B:accounts",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900002/bookkeeping-accounts?hits=0&page=0"
+      },
+      "body": [
+        {
+          "id": "20",
+          "bookkeepingAccountNo": "2960",
+          "name": "Mellomværende – dedikert konto",
+          "isActive": true
+        }
+      ],
+      "retrievedAt": "2026-09-16T11:59:42.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "B",
+        "kind": "before",
+        "key": "B:before",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900002/reports/trial-balance?startDate=2026-08-01&endDate=2026-08-31"
+      },
+      "body": {
+        "trialBalanceOutputSub": [
+          {
+            "bookkeepingAccountNo": "2960",
+            "bookkeepingAccountName": "Mellomværende",
+            "sumIngoing": "-85000.00",
+            "sumChanged": "-140000.00",
+            "sumOutgoing": "-225000.00"
+          }
+        ],
+        "sumIngoing": "0.00",
+        "sumChanged": "0.00",
+        "sumOutgoing": "0.00"
+      },
+      "retrievedAt": "2026-09-16T11:59:43.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "A",
+        "kind": "details",
+        "account": "1560",
+        "key": "A:details:1560",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900001/reports/trial-balance/details?startDate=2026-08-01&endDate=2026-08-31&bookkeepingAccountNo=1560"
+      },
+      "body": [
+        {
+          "id": "1000",
+          "transactionId": "10000",
+          "transactionNoYear": "1-2026",
+          "date": "2026-08-01",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-1",
+          "description": "Syntetisk mellomværende 1",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1001",
+          "transactionId": "10001",
+          "transactionNoYear": "2-2026",
+          "date": "2026-08-02",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-2",
+          "description": "Syntetisk mellomværende 2",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1002",
+          "transactionId": "10002",
+          "transactionNoYear": "3-2026",
+          "date": "2026-08-03",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-3",
+          "description": "Syntetisk mellomværende 3",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1003",
+          "transactionId": "10003",
+          "transactionNoYear": "4-2026",
+          "date": "2026-08-04",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-4",
+          "description": "Syntetisk mellomværende 4",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1004",
+          "transactionId": "10004",
+          "transactionNoYear": "5-2026",
+          "date": "2026-08-05",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-5",
+          "description": "Syntetisk mellomværende 5",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1005",
+          "transactionId": "10005",
+          "transactionNoYear": "6-2026",
+          "date": "2026-08-06",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-6",
+          "description": "Syntetisk mellomværende 6",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1006",
+          "transactionId": "10006",
+          "transactionNoYear": "7-2026",
+          "date": "2026-08-07",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-7",
+          "description": "Syntetisk mellomværende 7",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1007",
+          "transactionId": "10007",
+          "transactionNoYear": "8-2026",
+          "date": "2026-08-08",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-8",
+          "description": "Syntetisk mellomværende 8",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1008",
+          "transactionId": "10008",
+          "transactionNoYear": "9-2026",
+          "date": "2026-08-09",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "DEMO-9",
+          "description": "Syntetisk mellomværende 9",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "1009",
+          "transactionId": "10009",
+          "transactionNoYear": "10-2026",
+          "date": "2026-08-31",
+          "bookkeepingAccountNo": "1560",
+          "amount": "15000.00",
+          "invoiceNo": "A-ONLY",
+          "description": "Syntetisk mellomværende 10",
+          "isResetTransaction": false,
+          "isCorrection": false
+        }
+      ],
+      "retrievedAt": "2026-09-16T11:59:44.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "B",
+        "kind": "details",
+        "account": "2960",
+        "key": "B:details:2960",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900002/reports/trial-balance/details?startDate=2026-08-01&endDate=2026-08-31&bookkeepingAccountNo=2960"
+      },
+      "body": [
+        {
+          "id": "2000",
+          "transactionId": "20000",
+          "transactionNoYear": "1-2026",
+          "date": "2026-08-01",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-1",
+          "description": "Syntetisk mellomværende 1",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2001",
+          "transactionId": "20001",
+          "transactionNoYear": "2-2026",
+          "date": "2026-08-02",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-2",
+          "description": "Syntetisk mellomværende 2",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2002",
+          "transactionId": "20002",
+          "transactionNoYear": "3-2026",
+          "date": "2026-08-03",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-3",
+          "description": "Syntetisk mellomværende 3",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2003",
+          "transactionId": "20003",
+          "transactionNoYear": "4-2026",
+          "date": "2026-08-04",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-4",
+          "description": "Syntetisk mellomværende 4",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2004",
+          "transactionId": "20004",
+          "transactionNoYear": "5-2026",
+          "date": "2026-08-05",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-5",
+          "description": "Syntetisk mellomværende 5",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2005",
+          "transactionId": "20005",
+          "transactionNoYear": "6-2026",
+          "date": "2026-08-06",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-6",
+          "description": "Syntetisk mellomværende 6",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2006",
+          "transactionId": "20006",
+          "transactionNoYear": "7-2026",
+          "date": "2026-08-07",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-7",
+          "description": "Syntetisk mellomværende 7",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2007",
+          "transactionId": "20007",
+          "transactionNoYear": "8-2026",
+          "date": "2026-08-08",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-8",
+          "description": "Syntetisk mellomværende 8",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2008",
+          "transactionId": "20008",
+          "transactionNoYear": "9-2026",
+          "date": "2026-08-09",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-15000.00",
+          "invoiceNo": "DEMO-9",
+          "description": "Syntetisk mellomværende 9",
+          "isResetTransaction": false,
+          "isCorrection": false
+        },
+        {
+          "id": "2009",
+          "transactionId": "20009",
+          "transactionNoYear": "10-2026",
+          "date": "2026-08-31",
+          "bookkeepingAccountNo": "2960",
+          "amount": "-5000.00",
+          "invoiceNo": "B-ONLY",
+          "description": "Syntetisk mellomværende 10",
+          "isResetTransaction": false,
+          "isCorrection": false
+        }
+      ],
+      "retrievedAt": "2026-09-16T11:59:45.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "A",
+        "kind": "after",
+        "key": "A:after",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900001/reports/trial-balance?startDate=2026-08-01&endDate=2026-08-31"
+      },
+      "body": {
+        "trialBalanceOutputSub": [
+          {
+            "bookkeepingAccountNo": "1560",
+            "bookkeepingAccountName": "Mellomværende",
+            "sumIngoing": "100000.00",
+            "sumChanged": "150000.00",
+            "sumOutgoing": "250000.00"
+          }
+        ],
+        "sumIngoing": "0.00",
+        "sumChanged": "0.00",
+        "sumOutgoing": "0.00"
+      },
+      "retrievedAt": "2026-09-16T11:59:46.000Z",
+      "status": 200
+    },
+    {
+      "request": {
+        "side": "B",
+        "kind": "after",
+        "key": "B:after",
+        "url": "https://api.gateway.conta-sandbox.no/accounting/organizations/900002/reports/trial-balance?startDate=2026-08-01&endDate=2026-08-31"
+      },
+      "body": {
+        "trialBalanceOutputSub": [
+          {
+            "bookkeepingAccountNo": "2960",
+            "bookkeepingAccountName": "Mellomværende",
+            "sumIngoing": "-85000.00",
+            "sumChanged": "-140000.00",
+            "sumOutgoing": "-225000.00"
+          }
+        ],
+        "sumIngoing": "0.00",
+        "sumChanged": "0.00",
+        "sumOutgoing": "0.00"
+      },
+      "retrievedAt": "2026-09-16T11:59:47.000Z",
+      "status": 200
+    }
+  ]
+}

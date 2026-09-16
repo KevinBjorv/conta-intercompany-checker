@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:10,000
+Kontroller mellomværende mellom to selskaper i Conta automatisk
+
+2
+00:00:10,000 --> 00:00:22,000
+To selskaper. Ett avgrenset forhold.
+
+3
+00:00:22,000 --> 00:00:37,000
+25 000 kroner i utgående differanse
+
+4
+00:00:37,000 --> 00:00:50,000
+Hva var der før måneden startet?
+
+5
+00:00:50,000 --> 00:01:02,000
+20 linjer. Grunnlaget følger med.
+
+6
+00:01:02,000 --> 00:01:15,000
+Ukjent er aldri null.
+
+7
+00:01:15,000 --> 00:01:30,000
+Prøv det syntetiske eksempelet.

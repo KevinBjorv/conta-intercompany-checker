@@ -1,0 +1,23 @@
+{
+  "name": "conta-intercompany-checker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "build": "node scripts/build.mjs",
+    "demo": "node --experimental-strip-types scripts/demo.ts",
+    "check": "npm run typecheck && npm run demo && npm run build && npm test",
+    "package": "node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.3",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}
