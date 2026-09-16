@@ -24,13 +24,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 4430,
-      "sha256": "2fce73b86cb2ffe119ce6c2fcc96149144c7b6f84cae51510e08ae4beed11526"
+      "bytes": 4603,
+      "sha256": "dfc25c86bab483eba1c950f82c015f8a5a1ad45b0106625386f2d71f9ddd6cf8"
     },
     {
       "path": "SPEC.md",
       "bytes": 4974,
       "sha256": "8e25c15aa1103c6e2979477ceefec83e1fd46c88ec2d24769103f2c22b8c4da1"
+    },
+    {
+      "path": "docs/ACCEPTANCE-MATRIX.md",
+      "bytes": 4889,
+      "sha256": "f732f809531bf3be6b1fa882dad413def5d42eabbd71f02e004067fac78adab9"
     },
     {
       "path": "docs/API-CONTRACT.md",
@@ -44,8 +49,8 @@
     },
     {
       "path": "docs/RELEASE-STATUS.md",
-      "bytes": 4201,
-      "sha256": "ed4698ead88c79289ac05058dfa9a7293e67d5d9c09b6ce587199eacca2e5875"
+      "bytes": 4523,
+      "sha256": "c32dfdaf3c84649108d24b5ea61f4fec569cdbc65f369146929d5a466b497cc6"
     },
     {
       "path": "docs/SETUP.md",
@@ -89,8 +94,8 @@
     },
     {
       "path": "release/demo/rapport.csv",
-      "bytes": 5046,
-      "sha256": "82ad7a3e7a955f828b1b4aface1d48128dbc7bff9c563fe99ca9a3078c3ae9ee"
+      "bytes": 6372,
+      "sha256": "7b314e862572fa620efbff9774eee4015e44c71a4732a4791d262d055feeb210"
     },
     {
       "path": "release/demo/rapport.html",
@@ -110,7 +115,7 @@
     {
       "path": "release/n8n-smoke-results.json",
       "bytes": 1263,
-      "sha256": "f6550b27cae33f81fe4e298fa67eae06bf5cd9d1394a03b2235ccace139f314d"
+      "sha256": "3cfde05fc6445f9793f74b5bcf4707c39f5253eb666aa19a53ce8acb06df8bea"
     },
     {
       "path": "release/video-verification.json",
@@ -209,8 +214,8 @@
     },
     {
       "path": "src/report.ts",
-      "bytes": 7501,
-      "sha256": "0facfb332811354419c6d1e3bdc83bd37169e91dcf78e70e64987efba74dbb02"
+      "bytes": 8490,
+      "sha256": "5fe81d293c179da35e94d35154bfc53ee9cd5842e80a18632d81434f04877f52"
     },
     {
       "path": "src/transport.ts",
@@ -224,8 +229,8 @@
     },
     {
       "path": "tests/core.test.ts",
-      "bytes": 14503,
-      "sha256": "fb39bbd24f3af7265da1cbc24b4e1fe1c551afbd8a95c28c05bf1452ec2f2507"
+      "bytes": 15795,
+      "sha256": "410f1b2517ea83697419788d6104894801d757f4f748a4c401664aa0664ffc9d"
     },
     {
       "path": "tests/workflow.test.ts",
@@ -239,13 +244,13 @@
     },
     {
       "path": "workflows/conta-intercompany.json",
-      "bytes": 151235,
-      "sha256": "5f8a78e65ff934db830dfdb6b9487ef5b9afcac9e6a336728eb29d76c139a75f"
+      "bytes": 156495,
+      "sha256": "639f5f04d726bf5044d75e69dd1db943cc589f8114f44e4c81f7f4baffde5ef9"
     },
     {
       "path": "workflows/conta-synthetic-demo.json",
-      "bytes": 68360,
-      "sha256": "fd4d86d77a58a86b1173bf41884c4aa883805c31edc96bf5991e341486ebd8c3"
+      "bytes": 70464,
+      "sha256": "fc21a3d49b4766eedbeb4c06911fa6a88ddc63ed2da7c00437281672c08d9eca"
     }
   ]
 }

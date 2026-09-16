@@ -168,3 +168,23 @@ test('explicit zero account with empty details is valid; missing zero account is
 test('changing numeric formatting alone between fetches is not a balance change', () => {
   const f = setup(); balance(f, 'A', 'after').sumIngoing = '100000'; assert.equal(run(f).completeness, 'COMPLETE');
 });
+
+test('incomplete reports do not present unknown review counts as zero and retain selected accounts', () => {
+  const f = setup(); f.receipts[0]!.status = 403;
+  const files = render(incomplete(f));
+  assert.match(files.html, /Kandidatforslag \(ikke vurdert\)/);
+  assert.match(files.html, /En tom tabell betyr ikke at perioden er uten transaksjoner/);
+  assert.doesNotMatch(files.html, /0 linjer gjenstår uten kandidat|Linjegrunnlag \(0\)/);
+  assert.ok(files.csv.includes('"Antall kandidatpar";"IKKE VURDERT"'));
+  assert.ok(files.csv.includes('"Antall linjer uten kandidat";"IKKE VURDERT"'));
+  assert.ok(files.csv.includes('"Valgte kontoer A";"1560"'));
+  assert.ok(files.csv.includes('"Valgte kontoer B";"2960"'));
+  assert.ok(files.csv.includes('"Absolutt utgående differanse NOK";"UKJENT"'));
+});
+test('CSV contains signed residual, magnitude and the reasons behind candidate pairs', () => {
+  const files = render(run());
+  assert.ok(files.csv.includes('"Restsaldo A + B";"";"15000.00";"10000.00";"25000.00"'));
+  assert.ok(files.csv.includes('"Absolutt utgående differanse NOK";"25000.00"'));
+  assert.ok(files.csv.includes('"Linje A";"Linje B";"Felles referanse";"Begrunnelse"'));
+  assert.ok(files.csv.includes('"1000";"2000";"DEMO-1";"Samme bekreftede fakturareferanse'));
+});

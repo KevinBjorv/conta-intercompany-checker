@@ -13,7 +13,7 @@ Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta 
 
 ## Executed evidence
 
-- TypeScript typecheck, 51 deterministic accounting/workflow tests, bundle build and reproducible synthetic acceptance: passed.
+- TypeScript typecheck, 53 deterministic accounting/workflow tests, bundle build and reproducible synthetic acceptance: passed. Incomplete reports show unknown review counts as not assessed, and CSV retains the selected account mapping, signed residual, magnitude and candidate reasons.
 - Local self-hosted n8n 2.39.6 on Windows/Node 24.13.1: eight scenarios passed. The full request loop used actual HTTP nodes, separate synthetic Header Auth credentials and a local fixture server, covering both organization branches, Retry-After/Wait, forbidden responses and changed totals. Separate probes verified exact raw-byte IDs/amounts and rejected redirects. The synthetic demo and invalid configuration also passed. See `release/n8n-smoke-results.json` for the run record and workflow hashes. This is CLI testing, not a Cloud or live Conta claim.
 - Norwegian HTML demo opened and visually inspected in the built-in browser. It shows NOK 25,000 closing residual = NOK 15,000 opening + NOK 10,000 movement, nine candidates and two unresolved lines. No live data was included.
 - n8n's hardened runner exposed a bundler export incompatibility; corrected and regression-tested. Its HTTP text mode rounded a 64-bit ID; raw-file mode corrected this and passed an actual HTTP-node test.
@@ -31,4 +31,4 @@ Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta 
 | Website publication and public download checks | Not published | Verified deployed bilingual page and working downloads/booking |
 | Norwegian video | Silent synthetic explainer prepared | Review the pilot wording before publication; narration is not included |
 
-Do not remove the pilot notice, enable unverified COMPLETE results, or convert synthetic/local evidence into claims of verified live compatibility. No emails or Conta writes were made. Local completion is not publication or accountant acceptance.
+The public source repository is `https://github.com/KevinBjorv/conta-intercompany-checker`; public availability does not establish live compatibility. Do not remove the pilot notice, enable unverified COMPLETE results, or convert synthetic/local evidence into claims of verified live compatibility. No emails or Conta writes were made. Local completion and publication are separate from accountant acceptance.

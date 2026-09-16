@@ -13,6 +13,7 @@ export function csvCell(value: unknown): string {
 const table = (heads: string[], rows: unknown[][]) => `<div class="scroll"><table><thead><tr>${heads.map(h => `<th scope="col">${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 export function render(report: Report): { html: string; csv: string; json: string } {
   const r = report, s = r.scope;
+  const complete = r.completeness === 'COMPLETE';
   const status = r.completeness === 'INCOMPLETE' ? 'Ufullstendig kontroll' : r.agreement === 'BALANCES_AGREE' ? 'Saldoene stemmer innenfor toleransen' : 'Differanse i saldoene';
   const candidateIds = new Set(r.candidates.flatMap(c => [`A:${c.a}`, `B:${c.b}`]));
   const reasons = new Map(r.unresolved.map(u => [`${u.side}:${u.lineId}`, u.reason]));
@@ -24,12 +25,19 @@ export function render(report: Report): { html: string; csv: string; json: strin
     ['Datastatus', r.completeness], ['Saldostatus', r.agreement ?? 'IKKE VURDERT'],
     ['Selskap A', s?.config.companies.A.name ?? '', s?.config.companies.A.organizationId ?? ''],
     ['Selskap B', s?.config.companies.B.name ?? '', s?.config.companies.B.organizationId ?? ''],
+    ['Valgte kontoer A', s?.config.companies.A.accounts.map(a => a.number).join(', ') ?? 'UKJENT'],
+    ['Valgte kontoer B', s?.config.companies.B.accounts.map(a => a.number).join(', ') ?? 'UKJENT'],
     ['Fra', s?.startDate ?? '', 'Til', s?.endDate ?? ''], ['Toleranse NOK', s?.config.tolerance ?? ''],
     ['Side', 'Konto', 'Inngående NOK', 'Bevegelse NOK', 'Utgående NOK'],
     ...r.accounts.map(a => [a.side, a.account, a.opening, a.movement, a.closing]),
     ['Restsaldo A + B', '', r.residual?.opening ?? 'UKJENT', r.residual?.movement ?? 'UKJENT', r.residual?.closing ?? 'UKJENT'],
+    ['Absolutt utgående differanse NOK', r.residual?.magnitude ?? 'UKJENT'],
+    ['Antall kandidatpar', complete ? r.candidates.length : 'IKKE VURDERT'],
+    ['Antall linjer uten kandidat', complete ? r.unresolved.length : 'IKKE VURDERT'],
     ...r.issues.map(i => ['Problem', i]),
     ['Saldoenighet er ikke ferdig avstemming. Kandidater og uavklarte linjer krever regnskapsførers vurdering.'],
+    [], ['Linje A', 'Linje B', 'Felles referanse', 'Begrunnelse'],
+    ...r.candidates.map(c => [c.a, c.b, c.reference, c.reason]),
     [], heads, ...lineRows, [], ['Kilde', 'URL', 'Hentet', 'HTTP'],
     ...r.sources.map(source => [source.key, source.url, source.retrievedAt, source.status]),
   ];
@@ -43,8 +51,8 @@ ${r.issues.length ? '<h2>Problemer som må løses</h2><ul>' + r.issues.map(i => 
   <h2>Omfang og kontovalg</h2>${table(['Side', 'Selskap', 'Conta-ID', 'Dedikerte kontoer'], s ? (['A', 'B'] as const).map(side => [side, s.config.companies[side].name, s.config.companies[side].organizationId, s.config.companies[side].accounts.map(a => a.number).join(', ')]) : [])}
   <h2>Inngående saldo, bevegelse og utgående saldo</h2>${table(['Side/konto', 'Inngående NOK', 'Bevegelse NOK', 'Utgående NOK'], [...r.accounts.map(a => [a.side + ' / ' + a.account, nok(a.opening), nok(a.movement), nok(a.closing)]), ...(r.residual ? [['Restsaldo A + B', nok(r.residual.opening), nok(r.residual.movement), nok(r.residual.closing)]] : [])])}
   <p class="note">Inngående restsaldo + periodens bevegelsesdifferanse = utgående restsaldo. En inngående differanse oppsto før denne måneden.</p>
-  <h2>Kandidatforslag (${r.candidates.length})</h2>${table(['Linje A', 'Linje B', 'Felles referanse', 'Begrunnelse'], r.candidates.map(c => [c.a, c.b, c.reference, c.reason]))}<p class="note">Ingen forslag er automatisk bekreftet. ${r.unresolved.length} linjer gjenstår uten kandidat.</p>
-  <h2>Linjegrunnlag (${r.lines.length})</h2>${table(heads, lineRows)}
+  <h2>Kandidatforslag (${complete ? r.candidates.length : 'ikke vurdert'})</h2>${table(['Linje A', 'Linje B', 'Felles referanse', 'Begrunnelse'], r.candidates.map(c => [c.a, c.b, c.reference, c.reason]))}<p class="note">${complete ? `Ingen forslag er automatisk bekreftet. ${r.unresolved.length} linjer gjenstår uten kandidat.` : 'Kandidater og antall uavklarte linjer kan ikke vurderes før kontrollen er fullført.'}</p>
+  <h2>${complete ? `Linjegrunnlag (${r.lines.length})` : 'Tilgjengelig linjegrunnlag – ufullstendig'}</h2>${complete ? '' : '<p class="note">Tabellen viser bare linjer som er validert før kontrollen stoppet. En tom tabell betyr ikke at perioden er uten transaksjoner.</p>'}${table(heads, lineRows)}
   <h2>Kilder og innhenting</h2>${table(['Kilde', 'Hentet (UTC)', 'HTTP'], r.sources.map(source => [source.key, source.retrievedAt, source.status]))}
   <p class="note">Saldoene hentes på nytt etter detaljene. Dette oppdager enkelte endringer underveis, men gir ikke et atomisk historisk øyeblikksbilde. Endringer som utligner hverandre kan forbli uoppdaget.</p><footer>Generert ${escapeHtml(r.generatedAt)} · versjon ${r.version} · Oppbevar rapport og kildegrunnlag privat etter virksomhetens rutiner.</footer></main></body></html>`;
   return { html, csv: '\ufeff' + csvRows.map(row => row.map(csvCell).join(';')).join('\r\n') + '\r\n', json: JSON.stringify(report, null, 2) };
