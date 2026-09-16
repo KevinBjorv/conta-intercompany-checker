@@ -28,7 +28,9 @@ Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta 
 | Live signs/dates/opening/omission/correction semantics | Not run | Completed `LIVE-ACCEPTANCE.md` with accountant review |
 | n8n Cloud | Not run: environment unavailable | Imported workflows, actual HTTP/credential behavior, downloads, retry and failure checks |
 | Operational schedule and retention | Not run | Real scheduled execution plus private retrieval/pruning verification |
-| Website publication and public download checks | Not published | Verified deployed bilingual page and working downloads/booking |
+| Website publication and public download checks | Published as a labeled pilot | Both language routes observed; browser download matched the tested workflow. See `PUBLICATION.md`. Embedded booking calendar remains inconclusive; direct booking fallback is available. |
 | Norwegian video | Silent synthetic explainer prepared | Review the pilot wording before publication; narration is not included |
 
-The public source repository is `https://github.com/KevinBjorv/conta-intercompany-checker`; public availability does not establish live compatibility. Do not remove the pilot notice, enable unverified COMPLETE results, or convert synthetic/local evidence into claims of verified live compatibility. No emails or Conta writes were made. Local completion and publication are separate from accountant acceptance.
+The public source repository and v0.1.0 prerelease are available at `https://github.com/KevinBjorv/conta-intercompany-checker`. The website is published at `https://bjorvand.ai/workflows/conta-intercompany-checker` with an English counterpart. See `PUBLICATION.md` for immutable source and deployment evidence. Documentation inside the v0.1.0 source archive and website download folder is the earlier release-preparation snapshot; this repository's current status supersedes its publication status only. The live acceptance limitations remain unchanged.
+
+Public availability does not establish live compatibility. Do not remove the pilot notice, enable unverified COMPLETE results, or convert synthetic/local evidence into claims of verified live compatibility. No emails or Conta writes were made. Publication is separate from accountant acceptance.
