@@ -22,13 +22,14 @@ The release assets and source tag are frozen. Later publication documentation do
 - Norwegian: https://bjorvand.ai/workflows/conta-intercompany-checker
 - English: https://bjorvand.ai/en/workflows/conta-intercompany-checker
 - Reviewed PR: https://github.com/KevinBjorv/bjorvand-ai/pull/1 — merged.
-- Website source: `1f224c796aeb55afb4f447bd3388be0b81fdec36`.
-- Current production deployment: `dpl_A4Prcg9tgiGcE8bF4Aige4jKJoCw`.
-- Deployment URL: https://bjorvand-58nwp16bp-bjorv.vercel.app
-- Vercel confirmed READY, production target, matching Git SHA, `gitDirty=0` and the `bjorvand.ai`/`www.bjorvand.ai` aliases.
+- Initial website source: `1f224c796aeb55afb4f447bd3388be0b81fdec36`; current source after the SEO/conversion update: `6037b918c419faea514bbf2b9fd23da763aa3f8a`.
+- Current production deployment: `dpl_2P9Gsaxx8FiaWBfLCTDCLVSwuxen`.
+- Deployment URL: https://bjorvand-a6zn3rrye-bjorv.vercel.app
+- Vercel confirmed READY, production target and matching Git SHA; the CLI confirmed the `bjorvand.ai` alias. The isolated website checkout was clean before deployment.
 - The previous production source was verified as `b721c74ef64357529b47c0723e2553fda6747d85` before publishing the isolated additive change. Unrelated local edits were excluded.
 - Both published language pages were observed in the browser with correct pilot limitations and locale-specific booking links. A production browser download of the synthetic workflow matched SHA-256 `fc21a3d49b4766eedbeb4c06911fa6a88ddc63ed2da7c00437281672c08d9eca`.
 - Rechecked on 2026-09-17: both production setup modals loaded their embedded calendars with the correct Norwegian/English event, 20-minute duration, Google Meet, Europe/Oslo and available times. Escape closed each modal. This resolves the earlier inconclusive loading observation. Direct fallback Cal.com pages were also verified earlier. Slot-selection automation was limited by iframe coordinate handling; no booking was submitted and no complete booking journey is claimed.
+- The subsequent bilingual SEO/conversion changes and verification are recorded in `SEO-CONVERSION.md`. Runtime workflows and frozen release assets are unchanged.
 
 ## What remains unverified
 

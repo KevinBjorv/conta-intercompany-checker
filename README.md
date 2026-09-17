@@ -8,6 +8,8 @@ Mellomværendekontroll for Conta is a free, MIT-licensed n8n workflow for compar
 
 The credential-free demo contains two synthetic companies and 20 ledger lines: NOK 15,000 opening residual + NOK 10,000 movement residual = NOK 25,000 closing residual. Nine one-to-one candidates remain suggestions; two lines have no candidate.
 
+[View the Norwegian sample report](https://bjorvand.ai/workflow-assets/conta-intercompany/rapport.html) · [Explore the pilot and discuss setup](https://bjorvand.ai/en/workflows/conta-intercompany-checker) · [Norsk oversikt](https://bjorvand.ai/workflows/conta-intercompany-checker)
+
 ## Try the demo
 
 1. Import [`workflows/conta-synthetic-demo.json`](workflows/conta-synthetic-demo.json) into a private n8n instance.

@@ -1,0 +1,5 @@
+.conta-checker .conta-breadcrumb{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:baseline;gap:8px;padding-top:24px;font-size:13px;line-height:1.7;color:#615c54}.conta-breadcrumb a{text-underline-offset:4px}
+.conta-checker .checker-hero{padding-top:40px}
+.conta-checker .button-secondary{background:transparent;color:var(--ink,#181a18);border:1px solid currentColor;box-shadow:none}
+.conta-checker .button-secondary:hover{background:#e8e1d5}
+.conta-call-note{font-size:14px;color:#4c514a;margin-top:-12px;margin-bottom:22px}

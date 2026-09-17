@@ -4,7 +4,9 @@ const target = resolve(process.argv[2] ?? '../Bjorvand AI');
 const route = 'app/workflows/conta-intercompany-checker';
 const copies = [
   ['site/page.tsx', `${route}/page.tsx`], ['site/opengraph-image.tsx', `${route}/opengraph-image.tsx`],
+  ['site/conta-actions.tsx', `${route}/conta-actions.tsx`], ['site/conta.css', `${route}/conta.css`],
   ['site/en-conta.json', 'i18n/en-conta.json'],
+  ['site/invariants-conta.json', 'i18n/invariants-conta.json'],
   ...['conta-intercompany.json', 'conta-synthetic-demo.json'].map(f => [`workflows/${f}`, `public/workflow-assets/conta-intercompany/${f}`]),
   ...['html', 'csv', 'json'].map(ext => [`release/demo/rapport.${ext}`, `public/workflow-assets/conta-intercompany/rapport.${ext}`]),
   ['release/demo/conta-demonstrasjon.mp4', 'public/workflow-assets/conta-intercompany/conta-demonstrasjon.mp4'],
@@ -14,8 +16,6 @@ const copies = [
 const sitePackage = JSON.parse(await readFile(resolve(target, 'package.json'), 'utf8'));
 if (sitePackage.name !== 'bjorvand-ai') throw new Error('Wrong site target.');
 for (const [source, destination] of copies) { const dest = resolve(target, destination); await mkdir(dirname(dest), { recursive: true }); await copyFile(source, dest); }
-const invariant = ['/workflows/conta-intercompany-checker', '/workflows/conta-intercompany-checker/opengraph-image', '/workflow-assets/conta-intercompany/conta-synthetic-demo.json', '/workflow-assets/conta-intercompany/conta-intercompany.json', '/workflow-assets/conta-intercompany/rapport.html', '/workflow-assets/conta-intercompany/SETUP.md', '/workflow-assets/conta-intercompany/conta-demonstrasjon.mp4', '/workflow-assets/conta-intercompany/conta-intercompany-checker-0.1.0.tar.gz', 'conta-checker-header', 'conta-checker-hero', 'conta-checker-closing', 'n8n · Conta · MIT'];
-await writeFile(resolve(target, 'i18n/invariants-conta.json'), JSON.stringify(invariant, null, 2) + '\n');
 const sitemapFile = resolve(target, 'app/sitemap.ts'); let sitemap = await readFile(sitemapFile, 'utf8');
 if (!sitemap.includes('/workflows/conta-intercompany-checker')) {
   const marker = 'const pages: MetadataRoute.Sitemap = [';
