@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-09-17T04:31:04.597Z",
+  "n8nVersion": "2.39.6",
+  "scope": "Actual n8n pruning timers deleted a copied synthetic scheduled execution and its inline HTML/CSV/JSON. No live Conta, Cloud, filesystem/S3 binary storage, backups or physical secure erasure claim.",
+  "workflowSha256": "639f5f04d726bf5044d75e69dd1db943cc589f8114f44e4c81f7f4baffde5ef9",
+  "testOnlyRetention": {
+    "EXECUTIONS_DATA_PRUNE": "true",
+    "EXECUTIONS_DATA_MAX_AGE": "0",
+    "EXECUTIONS_DATA_PRUNE_MAX_COUNT": "0",
+    "EXECUTIONS_DATA_HARD_DELETE_BUFFER": "0",
+    "EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL": "1",
+    "EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL": "1"
+  },
+  "before": {
+    "execution_entity": 1,
+    "execution_data": 1,
+    "storedFormats": [
+      "html",
+      "csv",
+      "json"
+    ]
+  },
+  "after": {
+    "execution_entity": 0,
+    "execution_data": 0
+  },
+  "cleanup": "Owned test server stopped. Original synthetic execution retained; only the disposable copy was pruned."
+}

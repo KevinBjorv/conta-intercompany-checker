@@ -1,6 +1,6 @@
 # Specification acceptance matrix
 
-Audited against `SPEC.md` on 2026-09-16; scheduling evidence added 2026-09-17. This matrix preserves the full release scope. A passed synthetic test proves the tested behavior, not live Conta semantics or Cloud compatibility.
+Audited against `SPEC.md` on 2026-09-16; scheduling and retention evidence added 2026-09-17. This matrix preserves the full release scope. A passed synthetic test proves the tested behavior, not live Conta semantics or Cloud compatibility.
 
 | Requirement | Authoritative evidence | Result |
 | --- | --- | --- |
@@ -17,12 +17,12 @@ Audited against `SPEC.md` on 2026-09-16; scheduling evidence added 2026-09-17. T
 | COMPLETE/INCOMPLETE separate from agreement; unknown is never zero | `src/engine.ts`, `src/compare.ts`, incomplete-render tests and n8n failure scenarios | Local tests pass. Host termination may yield no report; execution failure is explicitly not success. |
 | Norwegian HTML/CSV/JSON, mappings, evidence, reasons and unresolved items | `src/report.ts`, generated demo artifacts and renderer tests | Implemented. Unknown review counts are shown as not assessed. |
 | HTML escaping, CSV formula protection, bounded retries, Retry-After | Core tests, actual HTTP 429/Wait and redirect probes | Passed locally; Cloud runtime behavior unverified. |
-| Private handling and documented retention | Workflow execution settings, `docs/SETUP.md`, `release/n8n-schedule-results.json` | Saved reports were retrieved from an actual local scheduled execution. Customer pruning policy and Cloud retention remain unaccepted. |
+| Private handling and documented retention | Workflow execution settings, `docs/SETUP.md`, `docs/RETENTION.md`, schedule and retention result records | Saved reports were retrieved from an actual local scheduled execution. n8n's automatic pruning deleted the disposable copy and inline reports. Customer policy, external binary stores, backups and Cloud remain unverified. |
 | Manual/monthly workflow, modular TypeScript, bundled Code nodes, standard HTTP nodes, no runtime imports/backend | `scripts/build.mjs`, workflow assertions, real local n8n execution and `release/n8n-schedule-results.json` | Manual and activated local scheduled execution passed using synthetic data and a one-minute test cadence. Last-completed-month selection and persisted output verified. Monthly production operation and Cloud remain unaccepted. |
 | Self-hosted and Cloud compatibility testing | n8n 2.39.6 Windows/Node 24.13.1 run record | Self-hosted synthetic CLI tests pass; n8n Cloud unavailable and untested. |
 | MIT original code/template, fixtures and English setup docs | `LICENSE`, source distribution manifest, public v0.1.0 prerelease; `PUBLICATION.md` | Published. Four release downloads matched tested local bytes; GitHub Actions passed. |
 | Norwegian video with synthetic data | `release/demo/conta-demonstrasjon.mp4`, `release/video-verification.json` | 90-second 1920×1080 silent explainer produced; no narration or live-provider recording. |
-| Bjorvand AI page with downloads and implementation CTAs, no redesign | `site/`, existing site components; 307 local checks; responsive/browser and byte-level download verification; `PUBLICATION.md` | Published with explicit pilot limits. Both language routes and a browser download verified. Booking fallback event pages load; embedded calendar behavior remains inconclusive. |
+| Bjorvand AI page with downloads and implementation CTAs, no redesign | `site/`, existing site components; 307 local checks; responsive/browser and byte-level download verification; `PUBLICATION.md` | Published with explicit pilot limits. Both language routes and a browser download verified. Both embedded calendars load localized events and available times; direct fallback pages also load. No booking submitted. |
 | Match known authorized Conta reports | `docs/LIVE-ACCEPTANCE.md` | NOT RUN: the second organization, approved accounts and test access are unavailable. |
 
-Full completion is blocked by the unverified live and Cloud requirements. A public pilot must retain those limitations and must not be described as a completed reconciliation or a verified live integration.
+Full completion still requires the unverified live and Cloud checks. The synthetic demo and assisted pilot may be marketed with the limitations in `PILOT-LAUNCH.md`; they must not be described as a completed reconciliation or a verified live integration. Customer-specific activation approvals are separate from marketing that clearly labeled pilot.

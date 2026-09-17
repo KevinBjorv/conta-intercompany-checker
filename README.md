@@ -2,6 +2,8 @@
 
 **Pilot release — not cleared for marketing as a verified live Conta integration.**
 
+The synthetic demo and assisted pilot offer are ready to present with that limitation. [PILOT-LAUNCH](docs/PILOT-LAUNCH.md) provides announcement drafts and the first-customer validation sequence. Full specification acceptance remains open.
+
 Mellomværendekontroll for Conta is a free, MIT-licensed n8n workflow for comparing signed balances between two explicitly authorized Conta companies. It prepares Norwegian HTML, CSV and JSON evidence for an accountant. It does not complete or approve a reconciliation.
 
 The credential-free demo contains two synthetic companies and 20 ledger lines: NOK 15,000 opening residual + NOK 10,000 movement residual = NOK 25,000 closing residual. Nine one-to-one candidates remain suggestions; two lines have no candidate.
