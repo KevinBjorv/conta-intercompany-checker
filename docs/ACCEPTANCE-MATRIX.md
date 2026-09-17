@@ -1,6 +1,6 @@
 # Specification acceptance matrix
 
-Audited against `SPEC.md` on 2026-09-16. This matrix preserves the full release scope. A passed synthetic test proves the tested behavior, not live Conta semantics or Cloud compatibility.
+Audited against `SPEC.md` on 2026-09-16; scheduling evidence added 2026-09-17. This matrix preserves the full release scope. A passed synthetic test proves the tested behavior, not live Conta semantics or Cloud compatibility.
 
 | Requirement | Authoritative evidence | Result |
 | --- | --- | --- |
@@ -17,8 +17,8 @@ Audited against `SPEC.md` on 2026-09-16. This matrix preserves the full release 
 | COMPLETE/INCOMPLETE separate from agreement; unknown is never zero | `src/engine.ts`, `src/compare.ts`, incomplete-render tests and n8n failure scenarios | Local tests pass. Host termination may yield no report; execution failure is explicitly not success. |
 | Norwegian HTML/CSV/JSON, mappings, evidence, reasons and unresolved items | `src/report.ts`, generated demo artifacts and renderer tests | Implemented. Unknown review counts are shown as not assessed. |
 | HTML escaping, CSV formula protection, bounded retries, Retry-After | Core tests, actual HTTP 429/Wait and redirect probes | Passed locally; Cloud runtime behavior unverified. |
-| Private handling and documented retention | Workflow execution settings and `docs/SETUP.md` | Supplied configuration/documentation exists. Operational retention and scheduled retrieval require deployment acceptance. |
-| Manual/monthly workflow, modular TypeScript, bundled Code nodes, standard HTTP nodes, no runtime imports/backend | `scripts/build.mjs`, workflow assertions and real local n8n execution | Manual local execution passed. Monthly production operation not accepted. |
+| Private handling and documented retention | Workflow execution settings, `docs/SETUP.md`, `release/n8n-schedule-results.json` | Saved reports were retrieved from an actual local scheduled execution. Customer pruning policy and Cloud retention remain unaccepted. |
+| Manual/monthly workflow, modular TypeScript, bundled Code nodes, standard HTTP nodes, no runtime imports/backend | `scripts/build.mjs`, workflow assertions, real local n8n execution and `release/n8n-schedule-results.json` | Manual and activated local scheduled execution passed using synthetic data and a one-minute test cadence. Last-completed-month selection and persisted output verified. Monthly production operation and Cloud remain unaccepted. |
 | Self-hosted and Cloud compatibility testing | n8n 2.39.6 Windows/Node 24.13.1 run record | Self-hosted synthetic CLI tests pass; n8n Cloud unavailable and untested. |
 | MIT original code/template, fixtures and English setup docs | `LICENSE`, source distribution manifest, public v0.1.0 prerelease; `PUBLICATION.md` | Published. Four release downloads matched tested local bytes; GitHub Actions passed. |
 | Norwegian video with synthetic data | `release/demo/conta-demonstrasjon.mp4`, `release/video-verification.json` | 90-second 1920×1080 silent explainer produced; no narration or live-provider recording. |

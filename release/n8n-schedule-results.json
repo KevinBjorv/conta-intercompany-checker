@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-09-17T04:15:01.321Z",
+  "workflowSha256": "639f5f04d726bf5044d75e69dd1db943cc589f8114f44e4c81f7f4baffde5ef9",
+  "scope": "Real activated local self-hosted Schedule Trigger, one-minute test cadence, synthetic credentials and loopback fixture API. Persisted reports read back from isolated execution storage. Not a monthly production, pruning-policy, Cloud or live Conta acceptance.",
+  "originalMonthlySchedule": {
+    "rule": {
+      "interval": [
+        {
+          "field": "cronExpression",
+          "expression": "0 6 1 * *"
+        }
+      ]
+    }
+  },
+  "testSchedule": {
+    "rule": {
+      "interval": [
+        {
+          "field": "cronExpression",
+          "expression": "* * * * *"
+        }
+      ]
+    }
+  },
+  "timezone": "Europe/Oslo",
+  "period": {
+    "startDate": "2026-08-01",
+    "endDate": "2026-08-31"
+  },
+  "execution": {
+    "id": 1,
+    "mode": "trigger",
+    "status": "success",
+    "startedAt": "2026-09-17 04:15:00.029",
+    "stoppedAt": "2026-09-17 04:15:00.329"
+  },
+  "report": {
+    "completeness": "COMPLETE",
+    "closingResidual": "25000.00",
+    "lines": 20,
+    "storedFormats": [
+      "html",
+      "csv",
+      "json"
+    ]
+  },
+  "getRequestsVerified": 8,
+  "cleanup": "Isolated server stopped and test workflow unpublished; synthetic execution retained privately for inspection."
+}

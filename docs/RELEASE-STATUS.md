@@ -1,6 +1,6 @@
 # Release readiness — 0.1.0 pilot
 
-Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta integration.** A synthetic demonstration and implementation pilot are available; production, Cloud and accountant acceptance are not established.
+Assessment updated: 2026-09-17. **Not ready for marketing as a verified live Conta integration.** A synthetic demonstration and implementation pilot are available; live Conta, Cloud and accountant acceptance are not established.
 
 ## Implemented
 
@@ -19,6 +19,7 @@ Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta 
 - n8n's hardened runner exposed a bundler export incompatibility; corrected and regression-tested. Its HTTP text mode rounded a 64-bit ID; raw-file mode corrected this and passed an actual HTTP-node test.
 - Local Bjorvand AI production build and 307 localization/routing assertions passed across 28 pages. Both Conta page languages were checked at 390, 768, 1440 and 1920 pixels with no horizontal document overflow. Setup modals open in the correct language and Escape closes them. The embedded calendar remained loading in the local browser; both direct Cal.com fallback pages opened with the correct event/language. No booking was submitted.
 - Eight local downloads matched their source bytes: live pilot template, synthetic demo, HTML/CSV/JSON reports, setup guide, video and source archive. Both language pages and generated social-preview images returned HTTP 200. The source archive was extracted and every manifest file hash verified.
+- A real activated local n8n Schedule Trigger passed on 2026-09-17 using a one-minute test cadence, synthetic credentials and a loopback API. It selected August 2026 as the last completed month, made eight GET requests and persisted the 20-line/NOK 25,000 result. HTML/CSV/JSON were decoded from saved execution storage. The server was stopped and the test workflow unpublished. See `release/n8n-schedule-results.json`. This does not establish monthly production operation, pruning policy or Cloud behavior.
 
 ## Remaining launch gates
 
@@ -27,7 +28,7 @@ Assessment date: 2026-09-16. **Not ready for marketing as a verified live Conta 
 | Two authorized Conta companies and approved dedicated accounts | Blocked: unavailable | Same-month known reports, access and explicit scope approval |
 | Live signs/dates/opening/omission/correction semantics | Not run | Completed `LIVE-ACCEPTANCE.md` with accountant review |
 | n8n Cloud | Not run: environment unavailable | Imported workflows, actual HTTP/credential behavior, downloads, retry and failure checks |
-| Operational schedule and retention | Not run | Real scheduled execution plus private retrieval/pruning verification |
+| Operational schedule and retention | Local synthetic trigger and saved-report retrieval passed | Customer deployment, actual monthly operation, Cloud and pruning-policy acceptance remain unverified. |
 | Website publication and public download checks | Published as a labeled pilot | Both language routes observed; browser download matched the tested workflow. See `PUBLICATION.md`. Embedded booking calendar remains inconclusive; direct booking fallback is available. |
 | Norwegian video | Silent synthetic explainer prepared | Review the pilot wording before publication; narration is not included |
 

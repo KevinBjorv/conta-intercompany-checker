@@ -30,4 +30,4 @@ The release assets and source tag are frozen. Later publication documentation do
 
 ## What remains unverified
 
-Two authorized Conta organizations, approved dedicated NOK account mappings, comparison with known Conta reports, n8n Cloud execution and operational scheduled-run/retention acceptance. Synthetic tests and public downloads do not supply this evidence.
+Two authorized Conta organizations, approved dedicated NOK account mappings, comparison with known Conta reports, n8n Cloud execution and customer production schedule/pruning-policy acceptance. A subsequent local Schedule Trigger test and saved-report retrieval passed on 2026-09-17 with synthetic data; see `release/n8n-schedule-results.json`. This adds local evidence without replacing the remaining live and Cloud gates.
