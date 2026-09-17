@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-16T17:29:40.347Z",
+  "date": "2026-09-17T04:42:37.234Z",
   "n8nVersion": "2.39.6",
   "nodeVersion": "v24.13.1",
   "platform": "win32",
@@ -12,42 +12,121 @@
     {
       "scenario": "demo",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "COMPLETE",
+      "fixtureRequests": 0
     },
     {
       "scenario": "invalid-config",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 0
     },
     {
       "scenario": "success",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "COMPLETE",
+      "fixtureRequests": 8
     },
     {
       "scenario": "retry",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "COMPLETE",
+      "fixtureRequests": 9
     },
     {
       "scenario": "forbidden",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 1
     },
     {
       "scenario": "changed",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 8
+    },
+    {
+      "scenario": "multiple-accounts",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "COMPLETE",
+      "fixtureRequests": 10
+    },
+    {
+      "scenario": "retry-date",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "COMPLETE",
+      "fixtureRequests": 9
+    },
+    {
+      "scenario": "retry-exhausted",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 3
+    },
+    {
+      "scenario": "timeout",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 3
+    },
+    {
+      "scenario": "auth-failure",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 1
+    },
+    {
+      "scenario": "malformed",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 6
+    },
+    {
+      "scenario": "empty-body",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 6
+    },
+    {
+      "scenario": "missing-account",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 8
+    },
+    {
+      "scenario": "mismatched-movement",
+      "passed": true,
+      "status": "success",
+      "reportStatus": "INCOMPLETE",
+      "fixtureRequests": 8
     },
     {
       "scenario": "http-0",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": null,
+      "fixtureRequests": 0
     },
     {
       "scenario": "http-1",
       "passed": true,
-      "status": "success"
+      "status": "success",
+      "reportStatus": null,
+      "fixtureRequests": 0
     }
   ]
 }

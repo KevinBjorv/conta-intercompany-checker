@@ -1,30 +1,42 @@
 // Development-only integration harness; never included in a customer workflow.
 // An isolated npm installation of n8n is expected at .qa/runtime.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
+import { scopeFor } from '../src/config.ts';
+import { requestPlan } from '../src/transport.ts';
 
-await mkdir('.qa/results', { recursive: true });
+const directory = resolve(`.qa/smoke-${Date.now()}`);
+await mkdir(directory, { recursive: true });
 const base = JSON.parse(await readFile('workflows/conta-intercompany.json', 'utf8'));
 const demo = JSON.parse(await readFile('workflows/conta-synthetic-demo.json', 'utf8'));
 const fixture = JSON.parse(await readFile('fixtures/synthetic.json', 'utf8'));
-const env = { ...process.env, N8N_USER_FOLDER: resolve('.qa/n8n-home'), N8N_DIAGNOSTICS_ENABLED: 'false', N8N_VERSION_NOTIFICATIONS_ENABLED: 'false', N8N_TEMPLATES_ENABLED: 'false', N8N_LOG_LEVEL: 'info', N8N_RUNNERS_BROKER_PORT: '5689', N8N_PORT: '5688' };
-function command(args, name) {
-  return new Promise((done, fail) => {
-    const child = spawn(process.execPath, [resolve('.qa/runtime/node_modules/n8n/bin/n8n'), ...args], { env, windowsHide: true });
-    let output = '';
-    child.stdout.on('data', b => { output += b; }); child.stderr.on('data', b => { output += b; });
-    child.on('error', fail);
-    child.on('close', async status => { await writeFile(`.qa/results/${name}.log`, output); if (status) fail(new Error(`${name} exited ${status}; see .qa/results/${name}.log`)); else done(output); });
-  });
+const env = { ...process.env, DB_TYPE: 'sqlite', DB_SQLITE_DATABASE: 'database.sqlite', EXECUTIONS_MODE: 'regular',
+  N8N_USER_FOLDER: directory, N8N_DIAGNOSTICS_ENABLED: 'false', N8N_VERSION_NOTIFICATIONS_ENABLED: 'false', N8N_TEMPLATES_ENABLED: 'false',
+  N8N_LOG_LEVEL: 'info', N8N_LISTEN_ADDRESS: '127.0.0.1', N8N_RUNNERS_BROKER_PORT: '5689', N8N_PORT: '5688' };
+async function command(args, name) {
+  const child = spawn(process.execPath, [resolve('.qa/runtime/node_modules/n8n/bin/n8n'), ...args], { env, cwd: directory, windowsHide: true });
+  let output = ''; let timedOut = false;
+  child.stdout.on('data', b => { output += b; }); child.stderr.on('data', b => { output += b; });
+  const timeout = setTimeout(() => {
+    timedOut = true;
+    if (process.platform === 'win32') spawnSync('taskkill', ['/PID', String(child.pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' });
+    else child.kill('SIGTERM');
+  }, 240000);
+  let status;
+  try { status = await new Promise((done, fail) => { child.on('error', fail); child.on('close', done); }); }
+  finally { clearTimeout(timeout); }
+  await writeFile(resolve(directory, `${name}.log`), output);
+  if (status !== 0 || timedOut) throw new Error(`${name} failed; see its isolated smoke-test log.`);
+  return output;
 }
 function extract(output) {
   // CLI logs precede the execution object. Only this top-level execution is parsed.
   const start = output.indexOf('{\n  "');
-  if (start < 0) throw new Error('No execution output. See .qa/results logs.');
+  if (start < 0) throw new Error('No execution output. See the isolated smoke-test logs.');
   let depth = 0, quoted = false, escaped = false;
   for (let i = start; i < output.length; i++) {
     const c = output[i];
@@ -39,20 +51,34 @@ const harnesses = [];
 demo.id = 'contaSynthetic01'; harnesses.push({ workflow: demo, name: 'demo', expected: 'COMPLETE' });
 base.id = 'contaInvalid001'; harnesses.push({ workflow: structuredClone(base), name: 'invalid-config', expected: 'INCOMPLETE' });
 const observed = [];
+const fixtures = new Map();
 // Actual HTTP nodes and synthetic Header Auth credentials; this server never
 // proxies requests or contacts Conta. Customer exports retain the Conta allowlist.
 const server = createServer((req, res) => {
   if (req.url.startsWith('/fixtures/')) {
     const [, , scenario, encodedKey, attempt] = req.url.split('/');
     const key = decodeURIComponent(encodedKey), side = key[0];
-    observed.push({ scenario, key, attempt: Number(attempt), method: req.method, credentialCorrect: req.headers.apikey === `synthetic-${side}-only` });
+    const observation = { scenario, key, attempt: Number(attempt), method: req.method, credentialCorrect: req.headers.apikey === `synthetic-${side}-only`, receivedAt: Date.now() };
+    observed.push(observation);
     let status = 200; const headers = { 'content-type': 'application/json' };
     if (req.method !== 'GET' || req.headers.apikey !== `synthetic-${side}-only` || scenario === 'forbidden') status = 403;
     if (scenario === 'retry' && key === 'A:accounts' && attempt === '1') { status = 429; headers['retry-after'] = '2'; }
-    const match = fixture.receipts.find(r => r.request.key === key);
+    if (scenario === 'retry-date' && key === 'A:accounts' && attempt === '1') {
+      status = 503; headers['retry-after'] = new Date(Date.now() + 4000).toUTCString();
+      observation.retryAfterDeadline = Date.parse(headers['retry-after']);
+    }
+    if (scenario === 'retry-exhausted') status = 503;
+    if (scenario === 'auth-failure') status = 401;
+    // Leave the socket unanswered: exercise the shipped 30-second timeout.
+    if (scenario === 'timeout') return;
+    const match = (fixtures.get(scenario) ?? fixture).receipts.find(r => r.request.key === key);
     if (!match) { res.writeHead(404); res.end('{}'); return; }
     const body = structuredClone(match.body);
     if (scenario === 'changed' && key === 'B:after') { body.trialBalanceOutputSub[0].sumChanged = '-140001.00'; body.trialBalanceOutputSub[0].sumOutgoing = '-225001.00'; }
+    if (scenario === 'missing-account' && key === 'B:before') body.trialBalanceOutputSub = [];
+    if (scenario === 'mismatched-movement' && key === 'A:details:1560') body[0].amount = '14999.00';
+    if (scenario === 'malformed' && key === 'B:details:2960') { res.writeHead(200, headers); res.end('{"truncated":'); return; }
+    if (scenario === 'empty-body' && key === 'B:details:2960') { res.writeHead(200, headers); res.end(); return; }
     // Match the documented numeric JSON wire types without rounding ID tokens.
     const raw = JSON.stringify(body).replace(/"(id|transactionId|sumIngoing|sumChanged|sumOutgoing|amount)":"(-?\d+(?:\.\d+)?)"/g, '"$1":$2');
     res.writeHead(status, headers); res.end(raw);
@@ -62,9 +88,19 @@ const server = createServer((req, res) => {
 });
 await new Promise(done => server.listen(0, '127.0.0.1', done));
 const port = server.address().port;
-for (const scenario of ['success', 'retry', 'forbidden', 'changed']) {
+for (const scenario of ['success', 'retry', 'forbidden', 'changed', 'multiple-accounts', 'retry-date', 'retry-exhausted', 'timeout', 'auth-failure', 'malformed', 'empty-body', 'missing-account', 'mismatched-movement']) {
   const workflow = structuredClone(base); workflow.id = `conta${scenario}01`; workflow.name = `TEST ONLY Conta ${scenario}`;
   const config = structuredClone(fixture.config); config.liveValidation = { reference: 'SYNTHETIC HARNESS ONLY', signsDatesOpeningAndOmissionsVerified: true };
+  const scenarioFixture = structuredClone(fixture);
+  if (scenario === 'multiple-accounts') {
+    for (const [side, account, id, opening, movement, closing] of [['A', '1570', '30', '1.00', '2.00', '3.00'], ['B', '2970', '40', '-1.00', '-1.00', '-2.00']]) {
+      config.companies[side].accounts.push({ number: account, dedicatedToOtherCompany: true, positionsInNok: true });
+      scenarioFixture.receipts.find(r => r.request.key === `${side}:accounts`).body.push({ id, bookkeepingAccountNo: account, isActive: true });
+      for (const kind of ['before', 'after']) scenarioFixture.receipts.find(r => r.request.key === `${side}:${kind}`).body.trialBalanceOutputSub.push({ bookkeepingAccountNo: account, sumIngoing: opening, sumChanged: movement, sumOutgoing: closing });
+      scenarioFixture.receipts.push({ request: { key: `${side}:details:${account}` }, body: [{ id: id + '00', transactionId: id + '000', date: '2026-08-01', bookkeepingAccountNo: account, amount: movement, isResetTransaction: false, isCorrection: false }] });
+    }
+  }
+  fixtures.set(scenario, scenarioFixture);
   workflow.nodes.find(n => n.name === 'Configuration').parameters.jsCode = `return [{json:${JSON.stringify(config)}}];`;
   // Change only destination and synthetic credentials in the development copy.
   for (const node of workflow.nodes.filter(n => n.type === 'n8n-nodes-base.httpRequest')) {
@@ -72,7 +108,7 @@ for (const scenario of ['success', 'retry', 'forbidden', 'changed']) {
     node.parameters.url = `={{ 'http://127.0.0.1:${port}/fixtures/${scenario}/' + encodeURIComponent($json.request.key) + '/' + $json.attempt }}`;
     node.credentials = { httpHeaderAuth: { id: `contaSynthetic${side}`, name: `TEST ONLY synthetic ${side}` } };
   }
-  harnesses.push({ workflow, name: scenario, expected: ['success', 'retry'].includes(scenario) ? 'COMPLETE' : 'INCOMPLETE' });
+  harnesses.push({ workflow, name: scenario, config, expected: ['success', 'retry', 'retry-date', 'multiple-accounts'].includes(scenario) ? 'COMPLETE' : 'INCOMPLETE' });
 }
 // Additional 64-bit precision and redirect probes.
 for (const [i, path] of ['/raw', '/redirect'].entries()) {
@@ -84,10 +120,10 @@ for (const [i, path] of ['/raw', '/redirect'].entries()) {
   harnesses.push({ workflow, name: `http-${i}`, expected: i === 0 ? 429 : 302 });
 }
 try {
-  await writeFile('.qa/synthetic-credentials.json', JSON.stringify(['A', 'B'].map(side => ({ id: `contaSynthetic${side}`, name: `TEST ONLY synthetic ${side}`, type: 'httpHeaderAuth', data: { name: 'apiKey', value: `synthetic-${side}-only` } }))));
-  await command(['import:credentials', '--input=.qa/synthetic-credentials.json'], 'import-credentials');
-  await writeFile('.qa/import.json', JSON.stringify(harnesses.map(h => h.workflow)));
-  await command(['import:workflow', '--input=.qa/import.json'], 'import');
+  await writeFile(resolve(directory, 'synthetic-credentials.json'), JSON.stringify(['A', 'B'].map(side => ({ id: `contaSynthetic${side}`, name: `TEST ONLY synthetic ${side}`, type: 'httpHeaderAuth', data: { name: 'apiKey', value: `synthetic-${side}-only` } }))));
+  await command(['import:credentials', `--input=${resolve(directory, 'synthetic-credentials.json')}`], 'import-credentials');
+  await writeFile(resolve(directory, 'import.json'), JSON.stringify(harnesses.map(h => h.workflow)));
+  await command(['import:workflow', `--input=${resolve(directory, 'import.json')}`], 'import');
   const results = [];
   for (const h of harnesses) {
     console.log(`Executing ${h.name} in n8n…`);
@@ -103,18 +139,33 @@ try {
       const item = runData['Private reports'][0].data.main[0][0];
       assert.equal(item.json.completeness, h.expected);
       assert.deepEqual(Object.keys(item.binary).sort(), ['csv', 'html', 'json']);
-      if (h.expected === 'COMPLETE') { assert.equal(item.json.residual.closing, '25000.00'); assert.equal(item.json.lines.length, 20); }
+      if (h.expected === 'COMPLETE') {
+        assert.equal(item.json.residual.closing, h.name === 'multiple-accounts' ? '25001.00' : '25000.00');
+        assert.equal(item.json.lines.length, h.name === 'multiple-accounts' ? 22 : 20);
+        if (h.name === 'multiple-accounts') assert.equal(item.json.accounts.length, 4);
+      }
       else assert.equal(item.json.agreement, null);
-      if (h.name === 'retry') assert.ok(runData['Honor Retry-After']?.length >= 1);
-      if (h.name === 'success') {
-        assert.deepEqual(observed.filter(r => r.scenario === 'success').map(r => r.key), fixture.receipts.map(r => r.request.key));
-        assert.ok(observed.filter(r => r.scenario === 'success').every(r => r.method === 'GET' && r.credentialCorrect));
+      const requests = observed.filter(r => r.scenario === h.name);
+      assert.ok(requests.every(r => r.method === 'GET' && r.credentialCorrect));
+      if (h.name === 'retry' || h.name === 'retry-date') {
+        assert.ok(runData['Honor Retry-After']?.length >= 1);
+        assert.deepEqual(requests.slice(0, 2).map(r => r.attempt), [1, 2]);
+        assert.ok(requests[1].receivedAt >= (requests[0].retryAfterDeadline ?? requests[0].receivedAt + 2000));
+      }
+      if (h.name === 'retry-exhausted' || h.name === 'timeout') {
+        assert.deepEqual(requests.map(r => [r.key, r.attempt]), [['A:accounts', 1], ['A:accounts', 2], ['A:accounts', 3]]);
+        assert.equal(runData['Honor Retry-After'].length, 2);
+        if (h.name === 'timeout') for (let i = 1; i < 3; i++) assert.ok(requests[i].receivedAt - requests[i - 1].receivedAt >= 30000);
+      }
+      if (h.name === 'auth-failure' || h.name === 'forbidden') assert.equal(requests.length, 1);
+      if (['success', 'multiple-accounts'].includes(h.name)) {
+        assert.deepEqual(requests.map(r => r.key), requestPlan(scopeFor(h.config, new Date())).map(r => r.key));
       }
     }
-    results.push({ scenario: h.name, passed: true, status: execution.status });
+    results.push({ scenario: h.name, passed: true, status: execution.status, reportStatus: typeof h.expected === 'string' ? h.expected : null, fixtureRequests: observed.filter(r => r.scenario === h.name).length });
     console.log(`PASS ${h.name}`);
   }
   const n8nVersion = JSON.parse(await readFile('.qa/runtime/node_modules/n8n/package.json', 'utf8')).version;
   const workflowHashes = Object.fromEntries(await Promise.all(['conta-intercompany.json', 'conta-synthetic-demo.json'].map(async name => [name, createHash('sha256').update(await readFile('workflows/' + name)).digest('hex')])));
   await writeFile('release/n8n-smoke-results.json', JSON.stringify({ date: new Date().toISOString(), n8nVersion, nodeVersion: process.version, platform: process.platform, scope: 'Local self-hosted CLI with actual HTTP nodes, synthetic Header Auth credentials and a loopback fixture server. No Conta integration, Cloud or schedule acceptance.', workflowHashes, results }, null, 2) + '\n');
-} finally { server.close(); }
+} finally { server.closeAllConnections(); server.close(); }

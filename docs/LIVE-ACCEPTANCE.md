@@ -23,6 +23,12 @@ In a private test copy exercise both credential branches, multiple selected acco
 
 For scheduling, verify timezone/month selection and the approved private storage/retention route before enabling the trigger. Test the actual scheduled activation, retrieval and deletion procedure in both environments. A simulated schedule or a local Code-node run is not equivalent to Cloud acceptance.
 
+## Reproducing the local runtime evidence
+
+The recorded local test uses Node 24.13.1 and an isolated n8n 2.39.6 installation at `.qa/runtime/node_modules/n8n`. Run `node scripts/n8n-smoke.mjs` from the repository root with localhost ports 5688 and 5689 free. Each run creates a fresh `.qa/smoke-<timestamp>` directory with synthetic credentials, inactive workflow copies and private logs. Requests stay on a loopback fixture server; the shipped Conta endpoint allowlist is unchanged. The timeout case uses the original 30-second setting and three attempts. A four-minute bound applies to each CLI command; a failed check stops the suite without writing a new passing result record.
+
+All 17 local scenarios passed on 2026-09-17; `release/n8n-smoke-results.json` identifies the exact workflow hashes and separates workflow execution success from COMPLETE/INCOMPLETE report status. The multiple-account case adds two synthetic accounts and lines, producing a deliberately different NOK 25,001 residual. The original public demo remains 20 lines and NOK 25,000. See `RETENTION.md` for the separate scheduled-run and automatic-pruning tests. None of these local checks establishes Conta or Cloud acceptance.
+
 ## Exit criteria
 
 An accountant approves mapping and semantic evidence; both deployment environments pass; public downloads contain only synthetic material; CI is green; the website download and implementation CTA work; a Norwegian demonstration is recorded with synthetic data; marketing copy says balance comparison/evidence preparation rather than completed reconciliation. Only then remove the pilot label and sign the release readiness record.
